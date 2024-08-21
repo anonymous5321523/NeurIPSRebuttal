@@ -23,8 +23,6 @@ def get_args():
     parser.add_argument("--batch_size", type=int, default=1, help = "Only supports batch_size=1 currently.")
     parser.add_argument("--device", type=str,
                         default='cuda',choices=['cuda','cpu'])
-
-    ## Generation and Controllable Type
     parser.add_argument('--prompt',
                         default='Image of a',type=str)
     parser.add_argument('--order',
@@ -34,8 +32,6 @@ def get_args():
                         help="Generation order of text")
     parser.add_argument('--samples_num',
                         default=100,type=int)
-
-    ## Hyperparameters
     parser.add_argument("--sentence_len", type=int, default=8)
     parser.add_argument("--approx_num", type=int, default=1)
     parser.add_argument("--candidate_k", type=int, default=200)
@@ -43,8 +39,6 @@ def get_args():
     parser.add_argument("--num_iterations", type=int, default=10, help="predefined iterations for Gibbs Sampling")
     parser.add_argument("--threshold", type=float, default=0)
     parser.add_argument("--SD_temperature", type=float, default=0.1)
-
-    ## Models and Paths
     parser.add_argument("--lm_model", type=str, default='bert-base-uncased',
                         help="Path to language model") # bert,roberta
     parser.add_argument("--stop_words_path", type=str, default='stop_words.txt',
