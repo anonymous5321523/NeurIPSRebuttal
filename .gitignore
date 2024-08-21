@@ -5,4 +5,3 @@ exps_mitigation/*
 exps_generation/*
 make_url_data.py
 alter_urls_2.pkl
-prompts_url.pickle

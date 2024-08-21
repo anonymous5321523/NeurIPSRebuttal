@@ -18,13 +18,13 @@ headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 fail_ids = []
 
 with open('alter_urls_2.pkl','rb') as f: alter_url = pickle.load(f)
-for key in alter_url: url_2[key] = alter_url[key]
+#for key in alter_url: url_2[key] = alter_url[key]
 
-for i, url in enumerate(url_2):
-    try:
-        Image.open(BytesIO(requests.get(url,headers=headers, timeout = 5, verify = False).content)).convert('RGB')
-    except:
-        if i not in [8, 12, 40, 46,53,54, 55, 56, 57, 58, 59,60, 73, 74, 83, 89, 128]: fail_ids.append(i)
+#for i, url in enumerate(url_2):
+    #try:
+    #    Image.open(BytesIO(requests.get(url,headers=headers, timeout = 5, verify = False).content)).convert('RGB')
+    #except:
+        #if i not in [8, 12, 40, 46,53,54, 55, 56, 57, 58, 59,60, 73, 74, 83, 89, 128]: fail_ids.append(i)
         #fail_ids.append(i)
 
 #breakpoint()
@@ -75,6 +75,6 @@ for prompt in drop_prompts: del prompts[prompt]
 prompts = list(prompts.items())
 random.shuffle(prompts)
 prompts = dict(prompts)
-with open('prompts_url.pickle','wb') as f: pickle.dump(prompts, f)
+#with open('prompts_url.pickle','wb') as f: pickle.dump(prompts, f)
 breakpoint()
 print(1)

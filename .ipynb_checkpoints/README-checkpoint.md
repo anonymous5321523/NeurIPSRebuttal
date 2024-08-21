@@ -94,3 +94,30 @@ output:
 | ![origin.png](assets/2.png) | ![augmented.png](assets/3.png) |
 |:---------------------------:|:------------------------------:|
 | origin.png                  | augmented.png                  |
+
+## Evaluation of Memorization Mitigation Methods
+
+To run the experiments, run the following codes:
+```bash
+## base Stable Diffusion
+python generate_with_custom_dataset.py --save_path exps_mitigation/base
+## RTA
+python generate_with_custom_dataset.py --save_path exps_mitigation/RTA --prompt_aug_style rand_token_add
+## RNA
+python generate_with_custom_dataset.py --save_path exps_mitigation/RNA --prompt_aug_style rand_num_add
+## Wen et al.
+python generate_with_custom_dataset.py --save_path exps_mitigation/Wen --optim_target_loss 5
+## Ren et al.
+python generate_with_custom_dataset.py --save_path exps_mitigation/Ren --rescale_attention 1.1
+```
+
+### Note
+We discovered that many URLs in the original dataset have expired. Consequently, we have provided alternative URLs for these samples. However, unlike the previously identified images that matched the generated samples exactly, the newly found images differ in certain details (such as text, color structures, etc.), leading to different SSCD measurements. To address this, we plan to update the evaluations with the new values in the camera-ready version and, moving forward, will provide multiple URLs per image to mitigate future URL expiration. An example of such a prompt and image URL is provided below.
+
+```arduino
+trigger prompt: 'the health mastery cafe with university doctor dave'
+alternative URL: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6kpRYA372WnIsU9kA9SLK4Jsk7lBI_05gyxwX5HZ4Kb-8QXFU
+```
+
+When generating the images using the DDIM scheduler with Stable Diffusion, the images produced will match exactly in structure, but minor details differ from those in the newly provided URLs.
+
