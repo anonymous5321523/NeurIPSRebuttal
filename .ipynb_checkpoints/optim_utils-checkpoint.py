@@ -196,10 +196,8 @@ def load(img_path):
     return img_tensor
 
 def process_images(images, transform, device, num_workers=16):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
-        # 인덱스와 함께 future 객체 저장
+    with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:ㄴ
         futures = {executor.submit(just_transform, image, transform, device): idx for idx, image in enumerate(images)}
-        # 순서를 유지하기 위해 결과를 저장할 리스트 초기화
         transformed_images = [None] * len(images)
         
         for future in concurrent.futures.as_completed(futures):
@@ -210,9 +208,7 @@ def process_images(images, transform, device, num_workers=16):
 
 def load_and_process_images(images, transform, device, num_workers=16):
     with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
-        # 인덱스와 함께 future 객체 저장
         futures = {executor.submit(load_and_transform, image, transform, device): idx for idx, image in enumerate(images)}
-        # 순서를 유지하기 위해 결과를 저장할 리스트 초기화
         transformed_images = [None] * len(images)
         
         for future in concurrent.futures.as_completed(futures):
@@ -223,9 +219,7 @@ def load_and_process_images(images, transform, device, num_workers=16):
 
 def load_images(images, num_workers=16):
     with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
-        # 인덱스와 함께 future 객체 저장
         futures = {executor.submit(load, image): idx for idx, image in enumerate(images)}
-        # 순서를 유지하기 위해 결과를 저장할 리스트 초기화
         transformed_images = [None] * len(images)
         
         for future in concurrent.futures.as_completed(futures):

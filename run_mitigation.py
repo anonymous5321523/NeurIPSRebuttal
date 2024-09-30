@@ -43,10 +43,10 @@ def main(args):
 
     session = requests.Session()
     retries = Retry(
-        total=5,  # 최대 재시도 횟수
-        backoff_factor=1,  # 재시도 간 대기 시간 (지수 증가)
-        status_forcelist=[500, 502, 503, 504],  # 재시도할 상태 코드
-        raise_on_status=False  # 상태 코드에 따라 에러 발생하지 않음
+        total=5,
+        backoff_factor=1,  
+        status_forcelist=[500, 502, 503, 504],  
+        raise_on_status=False  
     )
     adapter = HTTPAdapter(max_retries=retries)
     session.mount('https://', adapter)

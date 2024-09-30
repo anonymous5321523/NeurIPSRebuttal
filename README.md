@@ -1,4 +1,4 @@
-# MemBench codes and data for Neurips dataset and benchmark 2024 rebuttal
+# MemBench: Memorized Image Trigger Prompt Dataset for Diffusion Models
 
 ## Prerequisites
 
@@ -8,14 +8,23 @@ To run the experiments, set up the environment using the following command:
 pip install -r requirements.txt
 ```
 
+### SSCD Model Download Instructions
+
 To download the SSCD model, please download it from the following link and place it in the current folder:
 https://dl.fbaipublicfiles.com/sscd-copy-detection/sscd_disc_large.torchscript.pt
+
+### COCO Dataset Download Instructions
+
+For the general prompt scenario, the prompts from the COCO 2017 validation set need to be downloaded. The official website is [https://cocodataset.org/#home](https://cocodataset.org/#home), but as of our last check, downloading directly from the site was not available. Therefore, it is recommended to use the [FiftyOne library](https://docs.voxel51.com/). 
+
+However, note that the caption annotation data may not be included in the FiftyOne library. As an alternative, you can download the `annotations_trainval2017/annotations/captions_val2017.json` file from [this Kaggle dataset](https://www.kaggle.com/datasets/nikhil7280/coco-image-caption?resource=download) and place it in the main folder of your project.
+
 
 ## Memorized Image Trigger Prompt Search (Algorithm 1)
 
 To run the experiments, run the following codes:
 ```bash
-python demo.py --device cuda --num_iterations 150 --order random
+python run_MCMC.py --device cuda --num_iterations 150 --order random
 ```
 
 ### Folder Structure
@@ -60,7 +69,7 @@ There can be many failure cases. Therefore, to obtain meaningful results, please
 
 To run the experiments, run the following codes:
 ```bash
-python demo.py --SD_temperature 1.5 --num_iterations 50 --threshold 3 --num_samples 1 --order aug --init_sentence 'the no limits business woman podcast'
+python run_MCMC.py --SD_temperature 1.5 --num_iterations 50 --threshold 3 --num_samples 1 --order aug --init_sentence 'the no limits business woman podcast'
 ```
 
 Afterward, a pickle file named `demo_{date}_aug_approx1_len10_topk200_sdtemp_1.5_sdth_3.0/000000.pickle` will be generated. This pickle file contains a Python dictionary structured as follows:
@@ -97,27 +106,38 @@ output:
 
 ## Evaluation of Memorization Mitigation Methods
 
-To run the experiments, run the following codes:
+To run the experiments in Stable Diffusion 1, run the following codes:
 ```bash
 ## base Stable Diffusion
-python generate_with_custom_dataset.py --save_path exps_mitigation/base
+python run_mitigation.py --save_path exps_mitigation/base
 ## RTA
-python generate_with_custom_dataset.py --save_path exps_mitigation/RTA --prompt_aug_style rand_token_add
+python run_mitigation.py --save_path exps_mitigation/RTA --prompt_aug_style rand_token_add
 ## RNA
-python generate_with_custom_dataset.py --save_path exps_mitigation/RNA --prompt_aug_style rand_num_add
+python run_mitigation.py --save_path exps_mitigation/RNA --prompt_aug_style rand_num_add
 ## Wen et al.
-python generate_with_custom_dataset.py --save_path exps_mitigation/Wen --optim_target_loss 5
+python run_mitigation.py --save_path exps_mitigation/Wen --optim_target_loss 5
 ## Ren et al.
-python generate_with_custom_dataset.py --save_path exps_mitigation/Ren --rescale_attention 1.1
+python run_mitigation.py --save_path exps_mitigation/Ren --rescale_attention 1.1
+```
+To run the experiments in COCO dataset, run the following codes:
+```bash
+## base Stable Diffusion
+python run_mitigation.py --save_path exps_mitigation/base_COCO --dataset COCO
 ```
 
-### Note
-We discovered that many URLs in the original dataset have expired. Consequently, we have provided alternative URLs for these samples. However, unlike the previously identified images that matched the generated samples exactly, the newly found images differ in certain details (such as text, color structures, etc.), leading to different SSCD measurements. To address this, we plan to update the evaluations with the new values in the camera-ready version and, moving forward, will provide multiple URLs per image to mitigate future URL expiration. An example of such a prompt and image URL is provided below.
+## Acknowledgements
+- [Detecting, Explaining, and Mitigating Memorization in Diffusion Models
+](https://github.com/YuxinWenRick/diffusion_memorization): Helped us to create mitigation codes.
+- [Unveiling and Mitigating Memorization in Text-to-image Diffusion Models through Cross Attention](https://github.com/renjie3/memattn): We have cloned this repo to implement Ren's method
 
-```arduino
-trigger prompt: 'the health mastery cafe with university doctor dave'
-alternative URL: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6kpRYA372WnIsU9kA9SLK4Jsk7lBI_05gyxwX5HZ4Kb-8QXFU
+## Citation
+
+If you wish to cite this work, please use the following BibTeX entry:
+
+```bibtex
+@article{hong2024membenchmemorizedimagetrigger,
+      title={MemBench: Memorized Image Trigger Prompt Dataset for Diffusion Models}, 
+      author={Chunsan Hong and Tae-Hyun Oh and Minhyuk Sung},
+      year={2024},
+      journal={arXiv preprint arXiv:2407.17095},
 ```
-
-When generating the images using the DDIM scheduler with Stable Diffusion, the images produced will match exactly in structure, but minor details differ from those in the newly provided URLs.
-

@@ -43,10 +43,10 @@ def main(args):
 
     session = requests.Session()
     retries = Retry(
-        total=5,  # 최대 재시도 횟수
-        backoff_factor=1,  # 재시도 간 대기 시간 (지수 증가)
-        status_forcelist=[500, 502, 503, 504],  # 재시도할 상태 코드
-        raise_on_status=False  # 상태 코드에 따라 에러 발생하지 않음
+        total=5,
+        backoff_factor=1,  
+        status_forcelist=[500, 502, 503, 504],  
+        raise_on_status=False  
     )
     adapter = HTTPAdapter(max_retries=retries)
     session.mount('https://', adapter)
@@ -88,7 +88,7 @@ def main(args):
         dataset = pd.read_csv('SD1_final.csv')
         dataset['urls'] = dataset['urls'].apply(ast.literal_eval)
     elif args.dataset == 'COCO':
-        with open('/home/jovyan/fileviewer/ChunsanHong/fake_detection_new/fake_detection/coco_data/annotations/captions_val2017.json', 'rb') as f: dataset = pd.DataFrame(json.load(f)['annotations']).drop_duplicates(subset='image_id')
+        with open('captions_val2017.json', 'rb') as f: dataset = pd.DataFrame(json.load(f)['annotations']).drop_duplicates(subset='image_id')
         dataset.columns = ['image_id', 'id', 'prompt']
 
     # generation
